@@ -2,6 +2,17 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "cli": {
+    "packageManager": "yarn",
+    "cache": {
+      "enabled": true,
+      "environment": "all",
+      "path": "tmp/cache/.angular"
+    },
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
+  },
   "projects": {
     "angular-boilerplate": {
       "projectType": "application",
@@ -9,7 +20,8 @@
         "@schematics/angular:component": {
           "style": "scss",
           "skipTests": true,
-          "standalone": false
+          "standalone": false,
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:class": {
           "skipTests": true
@@ -54,6 +66,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets"
               }
             ],
             "styles": [
@@ -80,7 +96,13 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -119,6 +141,15 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
